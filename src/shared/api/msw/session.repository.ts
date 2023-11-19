@@ -13,7 +13,6 @@ export const sessionRepository = {
   },
   signIn: async (value: SignInDto) => {
     const users = await usersRepository.getUsers();
-    console.log(users);
 
     const user = users.find(
       (user) => user.email === value.email && user.password === value.password,

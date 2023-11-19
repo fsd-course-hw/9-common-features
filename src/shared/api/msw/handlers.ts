@@ -128,7 +128,6 @@ export const getHandlers = async () => {
     }),
 
     http.get("/api/tasks", async () => {
-      await delay(1000);
       const sesson = await sessionRepository.getSession();
 
       if (!sesson) {
@@ -142,7 +141,6 @@ export const getHandlers = async () => {
 
     http.post("/api/tasks", async ({ request }) => {
       const body = await request.json();
-      await delay(1000);
       const sesson = await sessionRepository.getSession();
 
       if (!sesson) {
@@ -157,7 +155,6 @@ export const getHandlers = async () => {
     http.get("/api/tasks/:taskId", async ({ params }) => {
       const taskId = params.taskId as string;
 
-      await delay(1000);
       const sesson = await sessionRepository.getSession();
 
       if (!sesson) {
@@ -170,7 +167,6 @@ export const getHandlers = async () => {
     http.patch("/api/tasks/:taskId", async ({ request, params }) => {
       const body = await request.json();
       const taskId = params.taskId as string;
-      await delay(1000);
       const sesson = await sessionRepository.getSession();
 
       if (!sesson) {
@@ -185,7 +181,6 @@ export const getHandlers = async () => {
       return ok(task);
     }),
     http.delete("/api/tasks/:taskId", async () => {
-      await delay(1000);
       return new HttpResponse(null, {
         status: 200,
         headers: {
@@ -197,7 +192,6 @@ export const getHandlers = async () => {
     http.post("/api/boards", async ({ request }) => {
       const body = await request.json();
 
-      await delay(1000);
       const sesson = await sessionRepository.getSession();
 
       if (!sesson) {
@@ -210,7 +204,6 @@ export const getHandlers = async () => {
     }),
 
     http.get("/api/boards", async () => {
-      await delay(1000);
       const sesson = await sessionRepository.getSession();
 
       if (!sesson) {
@@ -231,7 +224,6 @@ export const getHandlers = async () => {
     http.get("/api/boards/:boardId", async ({ params }) => {
       const boardId = params.boardId as string;
 
-      await delay(1000);
       const sesson = await sessionRepository.getSession();
 
       if (!sesson) {
@@ -263,7 +255,6 @@ export const getHandlers = async () => {
       const body = await request.json();
       const boardId = params.boardId as string;
 
-      await delay(1000);
       const sesson = await sessionRepository.getSession();
 
       if (!sesson) {
@@ -292,7 +283,6 @@ export const getHandlers = async () => {
     http.delete("/api/boards/:boardId", async ({ params }) => {
       const boardId = params.boardId as string;
 
-      await delay(1000);
       const sesson = await sessionRepository.getSession();
 
       if (!sesson) {

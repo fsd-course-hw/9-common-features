@@ -10,7 +10,8 @@ import { PrivateLoader } from "./loaders/private-loader";
 import { AppLoader } from "./loaders/app-loader";
 import { AppLayout } from "./layouts/app-layout";
 import { ForbiddenPage } from "@/pages/403";
-import { AppProvider } from "./app-provider";
+import { AppProvider } from "./providers/app-provider";
+import { PrivateProvider } from "./providers/private-provider";
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +26,9 @@ export const router = createBrowserRouter([
       {
         element: (
           <PrivateLoader>
-            <PrivateLayout />
+            <PrivateProvider>
+              <PrivateLayout />
+            </PrivateProvider>
           </PrivateLoader>
         ),
         children: [

@@ -22,6 +22,7 @@ export type BoardStore = {
   ) => Promise<void>;
 
   saveBoard: (value: Board) => Promise<void>;
+  reloadBoard: () => Promise<void>;
 };
 
 export type BoardCardStore = {
@@ -34,10 +35,12 @@ export const createBoardStore = ({
   board,
   itemStore,
   getConfirmation,
+  onBoardSaved,
 }: {
   board: Board;
   itemStore: BoardCardStore;
   getConfirmation: (params: ConfirmationParams) => Promise<boolean>;
+  onBoardSaved: () => void;
 }) => {
   return create<BoardStore>((set, get) => ({
     board,
@@ -179,7 +182,12 @@ export const createBoardStore = ({
 
     saveBoard: async (value: Board) => {
       await api.updateBoard(value.id, value);
+      onBoardSaved();
       set({ board: value });
+    },
+    reloadBoard: async () => {
+      const board = await api.getBoardById(get().board.id);
+      set({ board });
     },
   }));
 };

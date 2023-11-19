@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { createStrictContext, useStrictContext } from "./react";
 
 type NotificationParams = {
   type: "success" | "error";

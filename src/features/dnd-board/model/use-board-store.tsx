@@ -7,6 +7,7 @@ import { BoardStore, createBoardStore } from "./board.store";
 import { useGetConfirmation } from "@/shared/lib/confirmation";
 import { boardDepsContext } from "../deps";
 import { api } from "@/shared/api";
+import { useEmitBoardEvents } from "./events/use-emit-board-events";
 
 export const boardStoreContext =
   createStrictContext<UseBoundStore<StoreApi<BoardStore>>>();
@@ -20,9 +21,17 @@ export function BoardStoreProvider({
 }) {
   const getConfirmation = useGetConfirmation();
   const deps = useStrictContext(boardDepsContext);
+  const boardEvents = useEmitBoardEvents(board.id);
 
   const [boardStore] = useState(() => {
-    return createBoardStore({ board, getConfirmation, itemStore: deps });
+    return createBoardStore({
+      board,
+      getConfirmation,
+      itemStore: deps,
+      onBoardSaved: () => {
+        boardEvents.boardUpdated();
+      },
+    });
   });
 
   return (
