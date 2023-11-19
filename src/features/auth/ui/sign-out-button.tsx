@@ -1,7 +1,9 @@
 import { UiButton } from "@/shared/ui/ui-button";
 import { useSignOut } from "../model/use-sign-out";
+import { useI18n } from "../i18n";
 
 export function SignOutButton({ className }: { className?: string }) {
+  const { t } = useI18n();
   const { signOut, isLoading } = useSignOut();
   return (
     <UiButton
@@ -10,7 +12,7 @@ export function SignOutButton({ className }: { className?: string }) {
       variant="outlined"
       onClick={() => signOut()}
     >
-      Выйти
+      {t("sign-out")}
     </UiButton>
   );
 }

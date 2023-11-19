@@ -1,6 +1,5 @@
 import { useSession } from "@/entities/session";
 import { getAvatarUrl } from "@/entities/user";
-import { SignOutButton } from "@/features/auth";
 
 export function Profile() {
   const { currentSession } = useSession();
@@ -11,7 +10,6 @@ export function Profile() {
     <div className="flex gap-2 items-center justify-end">
       <img className="w-8 h-8" src={getAvatarUrl(currentSession.avatarId)} />
       <div className="text-lg">{currentSession.name}</div>
-      <SignOutButton />
     </div>
   );
 }

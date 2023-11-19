@@ -3,8 +3,10 @@ import { UiTextField } from "@/shared/ui/ui-text-field";
 import { useForm } from "react-hook-form";
 import { useSignIn } from "../model/use-sign-in";
 import clsx from "clsx";
+import { useI18n } from "../i18n";
 
 export function SignInForm({ className }: { className?: string }) {
+  const { t } = useI18n();
   const { register, handleSubmit, formState } = useForm<{
     email: string;
     password: string;
@@ -36,7 +38,7 @@ export function SignInForm({ className }: { className?: string }) {
         error={formState.errors.email?.message}
       />
       <UiTextField
-        label="Пароль"
+        label={t("password-label")}
         inputProps={{
           ...register("password"),
           type: "password",
@@ -45,7 +47,7 @@ export function SignInForm({ className }: { className?: string }) {
         error={formState.errors.password?.message}
       />
       <UiButton variant="primary" type="submit" isLoading={isLoading}>
-        Войти
+        {t("sign-in")}
       </UiButton>
       {error && <p className="text-red-500">{error}</p>}
     </form>

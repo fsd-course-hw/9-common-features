@@ -28,6 +28,7 @@ export function UiTextField({
     multiline ? textAreaProps?.className : inputProps?.className,
     !multiline ? "h-10" : "py-2",
     "rounded border border-slate-300 focus:border-teal-600 px-2  outline-none",
+    "dark:border-slate-700 dark:bg-slate-800 dark:focus:border-teal-600",
   );
   return (
     <div className={clsx(className, "flex flex-col gap-1")}>

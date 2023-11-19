@@ -3,8 +3,10 @@ import { api } from "@/shared/api";
 import { ROUTER_PATHS } from "@/shared/constants";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useI18n } from "../i18n";
 
 export function useSignIn() {
+  const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ export function useSignIn() {
         return session;
       })
       .catch(() => {
-        setError("Не верный логин или пароль");
+        setError(t("sign-in-error"));
       })
       .finally(() => {
         setIsLoading(false);
