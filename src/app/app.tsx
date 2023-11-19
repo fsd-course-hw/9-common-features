@@ -1,13 +1,6 @@
-import { AppLoader } from "./app-loader";
-import { AppRouter } from "./app-router";
-import { AppProvider } from "./app-provider";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 export function App() {
-  return (
-    <AppLoader>
-      <AppProvider>
-        <AppRouter />
-      </AppProvider>
-    </AppLoader>
-  );
+  return <RouterProvider router={router} />;
 }

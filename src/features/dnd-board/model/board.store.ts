@@ -1,4 +1,5 @@
-import { Board, BoardCard, boardsRepository } from "@/entities/board";
+import { Board, BoardCard } from "@/entities/board";
+import { api } from "@/shared/api";
 import { ConfirmationParams } from "@/shared/lib/confirmation";
 import { produce } from "immer";
 import { nanoid } from "nanoid";
@@ -7,12 +8,12 @@ import { create } from "zustand";
 export type BoardStore = {
   board: Board;
 
-  addColumn: (title: string) => Promise<void>;
-  updateColumn: (id: string, title: string) => Promise<void>;
+  addColumn: (name: string) => Promise<void>;
+  updateColumn: (id: string, name: string) => Promise<void>;
   removeColumn: (id: string) => Promise<void>;
   moveColumn: (index: number, newIndex: number) => Promise<void>;
 
-  addBoardCard: (colId: string, title: string) => Promise<void>;
+  addBoardCard: (colId: string, name: string) => Promise<void>;
   updateBoardCard: (colId: string, boardCard: BoardCard) => Promise<void>;
   removeBoardCard: (colId: string, boardCardId: string) => Promise<void>;
   moveBoardCard: (
@@ -20,12 +21,11 @@ export type BoardStore = {
     end: { colId: string; index: number },
   ) => Promise<void>;
 
-  reloadBoard: () => Promise<void>;
   saveBoard: (value: Board) => Promise<void>;
 };
 
 export type BoardCardStore = {
-  createBoardCard: (title: string) => Promise<BoardCard>;
+  createBoardCard: (name: string) => Promise<BoardCard>;
   updateBoardCard: (boardCard: BoardCard) => Promise<BoardCard | undefined>;
   onBeforeRemoveBoardCard: (boardCard: string) => Promise<void>;
 };
@@ -41,22 +41,22 @@ export const createBoardStore = ({
 }) => {
   return create<BoardStore>((set, get) => ({
     board,
-    addColumn: async (title) => {
+    addColumn: async (name) => {
       const board = get().board;
 
       const newBoard = produce<Board>((draft) => {
-        draft.cols.push({ id: nanoid(), title: title, items: [] });
+        draft.cols.push({ id: nanoid(), name: name, items: [] });
       })(board);
 
       return get().saveBoard(newBoard);
     },
 
-    updateColumn: async (id, title) => {
+    updateColumn: async (id, name) => {
       const board = get().board;
 
       const newBoard = produce<Board>((draft) => {
         const index = draft.cols.findIndex((col) => col.id === id);
-        draft.cols[index].title = title;
+        draft.cols[index].name = name;
       })(board);
 
       return get().saveBoard(newBoard);
@@ -99,10 +99,10 @@ export const createBoardStore = ({
     },
 
     // board item methods
-    addBoardCard: async (colId, title) => {
+    addBoardCard: async (colId, name) => {
       const board = get().board;
 
-      const boardCard = await itemStore.createBoardCard(title);
+      const boardCard = await itemStore.createBoardCard(name);
 
       const newBoard = produce<Board>((draft) => {
         const index = draft.cols.findIndex((col) => col.id === colId);
@@ -177,12 +177,8 @@ export const createBoardStore = ({
       return get().saveBoard(newBoard);
     },
 
-    reloadBoard: async () => {
-      const board = await boardsRepository.getBoard(get().board.id);
-      set({ board });
-    },
     saveBoard: async (value: Board) => {
-      await boardsRepository.saveBoard(value);
+      await api.updateBoard(value.id, value);
       set({ board: value });
     },
   }));

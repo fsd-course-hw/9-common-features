@@ -9,7 +9,10 @@ export function UiPageSpinner({
   className?: string;
   isLoading?: boolean;
 }) {
-  const isShown = useAppearanceDelay(isLoading, { minDisplay: 2000 });
+  const isShown = useAppearanceDelay(isLoading, {
+    minDisplay: 500,
+    defaultValue: true,
+  });
 
   if (!isShown) return null;
 

@@ -1,7 +1,6 @@
-import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { CreateTaskData, Task, UpdateTaskData } from "./types";
-import { tasksRepository } from "./tasks.repository";
+import { api } from "@/shared/api";
 
 export type TasksStore = {
   tasks: Task[];
@@ -10,7 +9,6 @@ export type TasksStore = {
   createTask: (data: CreateTaskData) => Promise<Task>;
   updateTask: (id: string, data: UpdateTaskData) => Promise<Task>;
   removeTask: (userId: string) => Promise<void>;
-  removeUserTasks: (userId: string) => Promise<void>;
 };
 
 export const useTasks = create<TasksStore>((set, get) => ({
@@ -20,46 +18,37 @@ export const useTasks = create<TasksStore>((set, get) => ({
   },
   loadTasks: async () => {
     set({
-      tasks: await tasksRepository.getTasks(),
+      tasks: await api.getTasks(),
     });
   },
   createTask: async (data) => {
-    const newTask = { id: nanoid(), ...data, cols: [] };
-    await tasksRepository.saveTask(newTask);
+    const newTask = await api.createTask(data);
+
     set({
-      tasks: await tasksRepository.getTasks(),
+      tasks: await api.getTasks(),
     });
 
     return newTask;
   },
   updateTask: async (id, data) => {
-    const task = await tasksRepository.getTask(id);
+    const task = await api.getTaskById(id);
     if (!task) {
       throw new Error();
     }
     const newtask = { ...task, ...data };
 
-    await tasksRepository.saveTask(newtask);
+    await api.updateTask(id, data);
 
     set({
-      tasks: await tasksRepository.getTasks(),
+      tasks: await api.getTasks(),
     });
 
     return newtask as Task;
   },
   removeTask: async (userId: string) => {
-    await tasksRepository.removetask(userId);
+    await api.deleteTask(userId);
     set({
-      tasks: await tasksRepository.getTasks(),
+      tasks: await api.getTasks(),
     });
-  },
-  removeUserTasks: async (userId: string) => {
-    const tasksToRemove = get().tasks.filter(
-      (task) => task.authorId === userId,
-    );
-
-    for (const task of tasksToRemove) {
-      await tasksRepository.removetask(task.id);
-    }
   },
 }));

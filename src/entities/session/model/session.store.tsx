@@ -1,34 +1,28 @@
-import { nanoid } from "nanoid";
 import { create } from "zustand";
 import { Session } from "./types";
-import { sessionRepository } from "./session.repository";
-
-type CreateSessionData = {
-  name: string;
-  avatarId: string;
-  userId: string;
-};
+import { api } from "@/shared/api";
 
 type SessionStore = {
+  isLoading: boolean;
   currentSession?: Session;
-  loadSession: () => Promise<void>;
-  removeSession: () => Promise<void>;
-  createSession: (session: CreateSessionData) => Promise<void>;
+  loadSession: () => Promise<Session>;
+  setCurrentSession: (session: Session) => void;
+  removeSession: () => void;
 };
 
 export const useSession = create<SessionStore>((set) => ({
+  isLoading: false,
   currentSession: undefined,
   loadSession: async () => {
-    const session = await sessionRepository.getSession();
+    set({ isLoading: true });
+    const session = await api.getSession();
+    set({ currentSession: session, isLoading: false });
+    return session;
+  },
+  setCurrentSession: (session) => {
     set({ currentSession: session });
   },
-  removeSession: async () => {
-    await sessionRepository.clearSession();
+  removeSession: () => {
     set({ currentSession: undefined });
-  },
-  createSession: async (data) => {
-    const newSession = { ...data, id: nanoid() };
-    await sessionRepository.saveSession(newSession);
-    set({ currentSession: newSession });
   },
 }));

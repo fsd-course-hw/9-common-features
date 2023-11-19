@@ -1,5 +1,5 @@
 export { useUsers } from "./model/users.store";
-export type { User } from "./model/types";
+export type { User, CreateUserData } from "./model/types";
 export { getAvatarUrl } from "./ui/get-avatar-url";
 export { AvatarsList } from "./ui/avatar-list";
 export { UserPreview } from "./ui/user-preview";

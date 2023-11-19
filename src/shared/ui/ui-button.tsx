@@ -1,12 +1,20 @@
 import clsx from "clsx";
 import { ButtonHTMLAttributes } from "react";
+import { UiSpinner } from "./ui-spinner";
 
 type UiButtonVariant = "primary" | "secondary" | "outlined";
 export type UiButtonProps = {
   variant: UiButtonVariant;
+  isLoading?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export function UiButton({ className, variant, ...props }: UiButtonProps) {
+export function UiButton({
+  className,
+  variant,
+  isLoading,
+  children,
+  ...props
+}: UiButtonProps) {
   return (
     <button
       {...props}
@@ -22,6 +30,8 @@ export function UiButton({ className, variant, ...props }: UiButtonProps) {
             "border border-slate-300 hover:border-slate-500 disabled:opacity-50",
         }[variant],
       )}
-    />
+    >
+      {isLoading ? <UiSpinner className="text-[1em]" /> : children}
+    </button>
   );
 }

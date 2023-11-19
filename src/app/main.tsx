@@ -3,4 +3,8 @@ import "./index.css";
 
 import { App } from "./app";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
+import("@/shared/api/msw")
+  .then(({ worker }) => worker.start())
+  .then(() => {
+    ReactDOM.createRoot(document.getElementById("root")!).render(<App />);
+  });

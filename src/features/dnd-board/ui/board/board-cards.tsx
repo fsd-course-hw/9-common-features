@@ -29,7 +29,7 @@ export function BoardCards({
         >
           {col.items
             .filter((item) =>
-              item.title.toLowerCase().includes(query.toLowerCase()),
+              item.name.toLowerCase().includes(query.toLowerCase()),
             )
             .map((item, index) => (
               <BoardCardComponent
@@ -78,7 +78,7 @@ function BoardCardComponent({
                 onClick={() => updateCard(colId, card)}
                 className="hover:underline p-1 text-lg grow text-start leading-tight"
               >
-                {card.title}
+                {card.name}
               </button>
               <button
                 className="text-rose-600 p-1 rounded-full hover:bg-rose-100 transition-all opacity-0 action"

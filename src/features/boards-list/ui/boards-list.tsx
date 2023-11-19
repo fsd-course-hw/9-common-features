@@ -2,16 +2,16 @@ import { useBoards } from "@/entities/board";
 import { AvatarsList, UserPreview, useUsers } from "@/entities/user";
 import { ROUTER_PATHS } from "@/shared/constants";
 import { Link, generatePath } from "react-router-dom";
-import { useBoardsListDeps } from "../deps";
 import { UpdateBoardButton } from "./update-board-button";
 import { RemoveBoardButton } from "./remove-board-button";
+import { useBoardsListAbility } from "../model/use-boards-list-ability";
+import { subject } from "@casl/ability";
 
 const boardUrl = (boardId: string) =>
-  generatePath(ROUTER_PATHS.HOME + ROUTER_PATHS.BOARD, { boardId });
+  generatePath(ROUTER_PATHS.BOARD, { boardId });
 
 export function BoardsList({ className }: { className?: string }) {
-  const { canViewBoard, canUpdateBoard, canRemoveBoard } =
-    useBoardsListDeps();
+  const boardsListAblity = useBoardsListAbility();
   const { boards } = useBoards();
   const users = useUsers((s) => s.usersMap());
 
@@ -28,11 +28,11 @@ export function BoardsList({ className }: { className?: string }) {
           </tr>
         </thead>
         <tbody>
-          {boards.filter(canViewBoard).map((board) => (
+          {boards.map((board) => (
             <tr key={board.id} className="px-5 py-2 border-b border-b-slate-3 ">
               <td className="p-2">
                 <Link to={boardUrl(board.id)} className="text-xl text-blue-500">
-                  {board.title}
+                  {board.name}
                 </Link>
               </td>
               <td className="p-2">
@@ -45,8 +45,12 @@ export function BoardsList({ className }: { className?: string }) {
               </td>
               <td className="p-2">
                 <div className="flex gap-2 ml-auto">
-                  {canUpdateBoard(board) && <UpdateBoardButton board={board} />}
-                  {canRemoveBoard(board) && <RemoveBoardButton board={board} />}
+                  {boardsListAblity.can("update", subject("Board", board)) && (
+                    <UpdateBoardButton board={board} />
+                  )}
+                  {boardsListAblity.can("delete", subject("Board", board)) && (
+                    <RemoveBoardButton board={board} />
+                  )}
                 </div>
               </td>
             </tr>

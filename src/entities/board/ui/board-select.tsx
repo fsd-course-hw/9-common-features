@@ -38,7 +38,7 @@ export function BoardSelect({
       options={options}
       value={board}
       onChange={onChangeBoard}
-      getLabel={(board) => board?.title ?? ""}
+      getLabel={(board) => board?.name ?? ""}
     />
   );
 }

@@ -1,6 +1,7 @@
 export const ROUTER_PATHS = {
-  HOME: "/",
-  BOARD: "board/:boardId",
-  BOARDS: "board",
-  USERS: "user",
+  BOARD: "/board/:boardId",
+  BOARDS: "/board",
+  USERS: "/user",
+  SIGN_IN: "/sign-in",
+  403: "/403",
 } as const;

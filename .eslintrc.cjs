@@ -23,7 +23,7 @@ module.exports = {
       },
       {
         type: "pages",
-        pattern: "src/pages/*",
+        pattern: "pages/*",
         capture: ["page"],
       },
       {
@@ -93,7 +93,7 @@ module.exports = {
               [
                 "shared",
                 {
-                  segment: "ui", // ("ui"|"constants")
+                  segment: "(ui|api)", // ("ui"|"constants")
                 },
               ],
             ],

@@ -18,14 +18,14 @@ export function UpdateColumnModal({
   );
   const updateColumn = useBoardStore().useSelector((s) => s.updateColumn);
 
-  const { control, handleSubmit } = useForm<{ title: string }>({
+  const { control, handleSubmit } = useForm<{ name: string }>({
     defaultValues: {
-      title: col?.title,
+      name: col?.name,
     },
   });
 
   const onSubmit = handleSubmit(async (data) => {
-    await updateColumn(columnId, data.title);
+    await updateColumn(columnId, data.name);
     onClose();
   });
 
@@ -38,7 +38,7 @@ export function UpdateColumnModal({
         <UiModal.Body className="flex flex-col gap-4">
           <Controller
             control={control}
-            name="title"
+            name="name"
             rules={{ required: "Название колонки - обязательное поле" }}
             render={({ field, fieldState }) => (
               <UiTextField

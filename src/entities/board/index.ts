@@ -9,4 +9,3 @@ export type {
   UpdateBoardData,
 } from "./model/types";
 export { BoardSelect } from "./ui/board-select";
-export { boardsRepository } from "./model/boards.repository";

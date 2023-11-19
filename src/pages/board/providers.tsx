@@ -43,13 +43,23 @@ export function BoardDepsProvider({
       value={{
         createBoardCard: async (title: string) => {
           if (!sesson) throw new Error();
-          return await createTask({ authorId: sesson?.userId, title });
+          const task = await createTask({ authorId: sesson?.userId, title });
+
+          return {
+            ...task,
+            name: task.title,
+          };
         },
         onBeforeRemoveBoardCard: async (id: string) => {
           await removeTask(id);
         },
         updateBoardCard: async (board) => {
-          return await updateTask(board.id);
+          const task = await updateTask(board.id);
+          if (!task) throw new Error();
+          return {
+            ...task,
+            name: task.title,
+          };
         },
       }}
     >

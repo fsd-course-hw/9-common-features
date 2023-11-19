@@ -1,11 +1,12 @@
 import { createStrictContext, useStrictContext } from "@/shared/lib/react";
 
 import { useCallback, useEffect, useState } from "react";
-import { Board, boardsRepository } from "@/entities/board";
+import { Board } from "@/entities/board";
 import { StoreApi, UseBoundStore } from "zustand";
 import { BoardStore, createBoardStore } from "./board.store";
 import { useGetConfirmation } from "@/shared/lib/confirmation";
 import { boardDepsContext } from "../deps";
+import { api } from "@/shared/api";
 
 export const boardStoreContext =
   createStrictContext<UseBoundStore<StoreApi<BoardStore>>>();
@@ -43,7 +44,7 @@ export const useFetchBoard = (boardId?: string) => {
     if (!boardId) {
       return;
     }
-    boardsRepository.getBoard(boardId).then((board) => {
+    api.getBoardById(boardId).then((board) => {
       if (!board) {
         return;
       }

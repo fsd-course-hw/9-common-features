@@ -1,12 +1,10 @@
 import { UserPreview, useUsers } from "@/entities/user";
-import { useUsersLisetDesp } from "../deps";
-import { useRemoveUser } from "../model/use-remove-user";
-import { RemoveIcon } from "@/shared/ui/ui-icons";
+import { RemoveUserButton } from "./remove-user-button";
+import { useUsersListAblity } from "..";
 
 export function UsersList({ className }: { className?: string }) {
   const { users } = useUsers();
-  const removeUser = useRemoveUser();
-  const { renderUserAuthAction } = useUsersLisetDesp();
+  const usersListAbility = useUsersListAblity();
 
   return (
     <div className={className}>
@@ -17,10 +15,9 @@ export function UsersList({ className }: { className?: string }) {
         >
           <UserPreview size="md" name={user.name} avatarId={user.avatarId} />
           <div className="ml-auto flex gap-2 shrink-0">
-            {renderUserAuthAction(user)}
-            <button onClick={() => removeUser(user.id)}>
-              <RemoveIcon className="w-8 h-8 text-rose-500" />
-            </button>
+            {usersListAbility.can("delete", "User") && (
+              <RemoveUserButton userId={user.id} />
+            )}
           </div>
         </div>
       ))}

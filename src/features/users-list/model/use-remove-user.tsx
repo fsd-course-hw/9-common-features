@@ -1,21 +1,30 @@
 import { useUsers } from "@/entities/user";
 import { useGetConfirmation } from "@/shared/lib/confirmation";
-import { useUsersLisetDesp } from "../deps";
+import { useState } from "react";
 
 export function useRemoveUser() {
-  const { onBeforeRemoveUser } = useUsersLisetDesp();
+  const [isLoading, setIsLoading] = useState(false);
   const getConfirmation = useGetConfirmation();
   const removeUser = useUsers((s) => s.removeUser);
 
-  return async (userId: string) => {
+  const remove = async (userId: string) => {
     const confirmation = await getConfirmation({
       description: "Вы действительно хотите удалить пользователя?",
     });
 
     if (!confirmation) return;
 
-    onBeforeRemoveUser(userId);
+    setIsLoading(true);
 
-    await removeUser(userId);
+    try {
+      await removeUser(userId);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    isLoading,
+    remove,
   };
 }

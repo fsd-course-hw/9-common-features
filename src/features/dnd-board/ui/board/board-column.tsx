@@ -38,7 +38,7 @@ export function BoardColumn({
             >
               <DotsSixVertical />
             </div>
-            <div className="text-lg mr-auto">{col.title}</div>
+            <div className="text-lg mr-auto">{col.name}</div>
             <button
               className="text-teal-600 p-1 rounded-full hover:bg-teal-100 transition-all opacity-0 action"
               onClick={() => setUpdateColumnModalOpen(true)}

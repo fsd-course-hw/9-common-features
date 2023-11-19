@@ -1,6 +1,10 @@
+type Role = "admin" | "user";
+
 export type Session = {
   id: string;
-  name: string;
-  avatarId: string;
   userId: string;
+  name: string;
+  email: string;
+  avatarId: string;
+  role: Role;
 };

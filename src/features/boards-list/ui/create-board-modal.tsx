@@ -9,7 +9,7 @@ import { UserMultiSelect } from "@/entities/user";
 export function CreateBoardModal({ onClose }: { onClose: () => void }) {
   const { control, handleSubmit } = useForm<CreateBoardData>({
     defaultValues: {
-      title: "",
+      name: "",
       editorsIds: [],
     },
   });
@@ -27,7 +27,7 @@ export function CreateBoardModal({ onClose }: { onClose: () => void }) {
         <UiModal.Body className="flex flex-col gap-4">
           <Controller
             control={control}
-            name="title"
+            name="name"
             rules={{ required: "Название доски - обязательное поле" }}
             render={({ field, fieldState }) => (
               <UiTextField
