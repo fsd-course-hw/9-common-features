@@ -9,6 +9,10 @@ export const useI18n = createI18nModule({
     en: "Sign out",
     ru: "Выход",
   },
+  "sign-in-success": {
+    en: "Sign in success",
+    ru: "Вы вошли",
+  },
   "sign-in-error": {
     en: "Wrong username or password",
     ru: "Неверное имя пользователя или пароль",

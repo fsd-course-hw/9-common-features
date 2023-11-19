@@ -1,9 +1,11 @@
 import { useUsers } from "@/entities/user";
 import { useGetConfirmation } from "@/shared/lib/confirmation";
+import { useToasts } from "@/shared/lib/toasts";
 import { useState } from "react";
 
 export function useRemoveUser() {
   const [isLoading, setIsLoading] = useState(false);
+  const { addToast } = useToasts();
   const getConfirmation = useGetConfirmation();
   const removeUser = useUsers((s) => s.removeUser);
 
@@ -18,6 +20,10 @@ export function useRemoveUser() {
 
     try {
       await removeUser(userId);
+      addToast({
+        message: "Пользователь удален",
+        type: "success",
+      });
     } finally {
       setIsLoading(false);
     }
