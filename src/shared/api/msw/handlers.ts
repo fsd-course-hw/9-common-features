@@ -124,6 +124,9 @@ export const getHandlers = async () => {
       if (!sesson) {
         return needAuthorization();
       }
+
+      await sessionRepository.signOut();
+
       return ok();
     }),
 
